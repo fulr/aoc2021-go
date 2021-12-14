@@ -17,7 +17,6 @@ func Day08Part1() {
 		}
 	}
 
-	fmt.Println(hits)
 	result := hits[2] + hits[3] + hits[4] + hits[7]
 	fmt.Printf("day 08 part1 %v\n", result)
 }
@@ -120,7 +119,6 @@ func Day08Part2() {
 				}
 			}
 		}
-		fmt.Println(nr)
 		result += nr
 	}
 

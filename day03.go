@@ -30,7 +30,7 @@ func Day03Part1() {
 		}
 	}
 
-	fmt.Printf("gamma %v epsilon %v\n", gammaRate, epsilonRate)
+	// fmt.Printf("gamma %v epsilon %v\n", gammaRate, epsilonRate)
 
 	g, err := strconv.ParseInt(gammaRate, 2, 0)
 	if err != nil {
@@ -42,7 +42,7 @@ func Day03Part1() {
 	}
 
 	result := g * e
-	fmt.Printf("part1 %v\n", result)
+	fmt.Printf("day 03 part1 %v\n", result)
 }
 
 func findCO2OrO2(lines []string, pos int, co2 bool) string {
@@ -78,8 +78,8 @@ func Day03Part2() {
 		log.Fatal(err)
 	}
 
-	fmt.Printf("o2 %v co2 %v\n", o2, co2)
+	// fmt.Printf("o2 %v co2 %v\n", o2, co2)
 
 	result := o2 * co2
-	fmt.Printf("part2 %v\n", result)
+	fmt.Printf("day 03 part2 %v\n", result)
 }

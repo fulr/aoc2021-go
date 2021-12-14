@@ -38,7 +38,7 @@ func Day02Part1() {
 			log.Fatal("error")
 		}
 	}
-	fmt.Printf("part1 h %v v %v mult %v\n", h, v, h*v)
+	fmt.Printf("day 02 part1 h %v v %v mult %v\n", h, v, h*v)
 }
 
 func Day02Part2() {
@@ -60,5 +60,5 @@ func Day02Part2() {
 			log.Fatal("error")
 		}
 	}
-	fmt.Printf("part 2 h %v v %v mult %v\n", h, v, h*v)
+	fmt.Printf("day 02 part 2 h %v v %v mult %v\n", h, v, h*v)
 }

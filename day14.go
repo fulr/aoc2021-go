@@ -48,8 +48,6 @@ func Day14Part1() {
 		}
 	}
 
-	fmt.Println(counts)
-
 	result := max - min
 
 	fmt.Printf("day 14 part1 %v\n", result)

@@ -82,8 +82,6 @@ func Day09Part2() {
 
 	sort.Ints(counts)
 
-	fmt.Println(counts)
-
 	result := counts[len(counts)-1] * counts[len(counts)-2] * counts[len(counts)-3]
 
 	fmt.Printf("day 09 part2 %v\n", result)

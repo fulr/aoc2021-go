@@ -20,7 +20,7 @@ func Day06Part1() {
 	}
 
 	result := len(fishes)
-	fmt.Printf("part1 %v\n", result)
+	fmt.Printf("day 06 part1 %v\n", result)
 }
 
 func Day06Part2() {
@@ -46,7 +46,7 @@ func Day06Part2() {
 		result += f
 	}
 
-	fmt.Printf("part2 %v\n", result)
+	fmt.Printf("day 06 part2 %v\n", result)
 }
 
 var testInputDay06 = [...]int{3, 4, 3, 1, 2}

@@ -89,7 +89,6 @@ func Day13Part2() {
 
 	for _, f := range folds {
 		foldedPaper := make(map[Point]bool)
-		fmt.Println(f)
 		if f.x {
 			for p := range paper {
 				if p.X > f.value {
@@ -128,8 +127,6 @@ func Day13Part2() {
 			maxY = p.Y
 		}
 	}
-
-	fmt.Printf("%v %v %v %v\n", minX, maxX, minY, maxY)
 
 	screen := make([][]rune, maxY-minY+1)
 

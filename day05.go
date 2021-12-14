@@ -23,7 +23,6 @@ func Day05Part1() {
 			if l.From.Y > l.To.Y {
 				inc = -1
 			}
-			fmt.Println(l)
 			for i := l.From.Y; i != l.To.Y; i += inc {
 				hits[Point{X: l.From.X, Y: i}]++
 			}
@@ -34,7 +33,6 @@ func Day05Part1() {
 			if l.From.X > l.To.X {
 				inc = -1
 			}
-			fmt.Println(l)
 			for i := l.From.X; i != l.To.X; i += inc {
 				hits[Point{Y: l.From.Y, X: i}]++
 			}
@@ -50,7 +48,7 @@ func Day05Part1() {
 	}
 
 	result := count
-	fmt.Printf("part1 %v\n", result)
+	fmt.Printf("day 05 part1 %v\n", result)
 }
 
 func Day05Part2() {
@@ -80,7 +78,7 @@ func Day05Part2() {
 	}
 
 	result := count
-	fmt.Printf("part2 %v\n", result)
+	fmt.Printf("day 05 part2 %v\n", result)
 }
 
 func cmp(a int, b int) int {
