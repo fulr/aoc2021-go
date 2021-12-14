@@ -57,21 +57,31 @@ func Day12Part1() {
 func Day12Part2() {
 	lines := readFile("inputs/day12.txt")
 	g := NewGraph(lines)
-	paths := []Path{NewPath("start")}
-	for {
-		done := true
+	paths := make([]Path, 0)
+	for _, cave := range g.Find("start") {
+		paths = append(paths, NewPath(cave))
+	}
+	newG := make([][2]string, 0)
+	for _, x := range g {
+		if x[0] == "start" || x[1] == "start" {
+			continue
+		}
+		newG = append(newG, x)
+	}
+	g = Graph(newG)
+	lookup := make(map[string]bool)
+	done := false
+	for !done {
+		done = true
 		newp := make([]Path, 0)
 		for _, p := range paths {
 			last := p[len(p)-1]
 			if last == "end" {
-				newp = append(newp, p)
+				lookup[p.String()] = true
 				continue
 			}
 		neighbors:
 			for _, nextCave := range g.Find(last) {
-				if nextCave == "start" {
-					continue
-				}
 				newPath := p.Add(nextCave)
 				if unicode.IsLower([]rune(nextCave)[0]) {
 					counts := make(map[string]int)
@@ -94,33 +104,18 @@ func Day12Part2() {
 						}
 					}
 				}
-				for _, t := range paths {
-					if newPath.Equal(t) {
-						continue neighbors
-					}
-				}
 				newp = append(newp, newPath)
 				done = false
 			}
 		}
-		if done {
-			break
-		}
 		paths = newp
 	}
 
-	result := 0
-	for _, p := range paths {
-		if p[len(p)-1] == "end" {
-			result++
-		}
-	}
+	result := len(lookup)
 	fmt.Printf("day 12 part2 %v\n", result)
 }
 
-type Graph struct {
-	g [][2]string
-}
+type Graph [][2]string
 
 func NewGraph(lines []string) Graph {
 	g := make([][2]string, 0)
@@ -128,14 +123,12 @@ func NewGraph(lines []string) Graph {
 		s := strings.Split(l, "-")
 		g = append(g, [2]string{s[0], s[1]})
 	}
-	return Graph{
-		g: g,
-	}
+	return g
 }
 
 func (g Graph) Find(s string) []string {
 	result := make([]string, 0)
-	for _, x := range g.g {
+	for _, x := range g {
 		if x[0] == s {
 			result = append(result, x[1])
 		}
@@ -166,4 +159,8 @@ func (a Path) Equal(b Path) bool {
 		}
 	}
 	return true
+}
+
+func (p Path) String() string {
+	return strings.Join(p, "-")
 }
