@@ -99,7 +99,7 @@ func NewPointSet(lines []string) PointSet {
 }
 
 func (s PointSet) IncNeighbors(p Point) {
-	for _, n := range p.Nieghbors8() {
+	for _, n := range p.Neighbors8() {
 		if _, ok := s[n]; ok {
 			s[n]++
 		}

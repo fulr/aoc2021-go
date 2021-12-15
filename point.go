@@ -24,7 +24,7 @@ func NewPoint(s string) Point {
 	return Point{X: x, Y: y}
 }
 
-func (p Point) Nieghbors8() []Point {
+func (p Point) Neighbors8() []Point {
 	return []Point{
 		{p.X + 1, p.Y + 1},
 		{p.X + 1, p.Y},
@@ -32,6 +32,15 @@ func (p Point) Nieghbors8() []Point {
 		{p.X - 1, p.Y + 1},
 		{p.X - 1, p.Y},
 		{p.X - 1, p.Y - 1},
+		{p.X, p.Y + 1},
+		{p.X, p.Y - 1},
+	}
+}
+
+func (p Point) Neighbors4() []Point {
+	return []Point{
+		{p.X + 1, p.Y},
+		{p.X - 1, p.Y},
 		{p.X, p.Y + 1},
 		{p.X, p.Y - 1},
 	}
