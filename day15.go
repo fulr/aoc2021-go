@@ -2,7 +2,6 @@ package aoc2021
 
 import (
 	"fmt"
-	"math"
 )
 
 func Day15Part1() {
@@ -10,7 +9,7 @@ func Day15Part1() {
 
 	set := NewPointSet(lines)
 
-	result := findPath(set, Point{0, 0}, Point{99, 99})
+	result := findPathHeap(set, Point{0, 0}, Point{99, 99})
 
 	fmt.Printf("day 15 part1 %v\n", result)
 }
@@ -36,36 +35,22 @@ func Day15Part2() {
 		}
 	}
 
-	result := findPath(newSet, Point{0, 0}, Point{499, 499})
+	result := findPathHeap(newSet, Point{0, 0}, Point{499, 499})
 	fmt.Printf("day 15 part2 %v\n", result)
 }
 
-func findPath(set PointSet, from Point, to Point) int {
-	todo := []Point{from}
+func findPathHeap(set PointSet, from Point, to Point) int {
+	todo := new(heap)
+	todo.insert(0, from)
 	totalRisk := make(map[Point]int)
-	totalRisk[todo[0]] = 0
+	totalRisk[from] = 0
 	visited := make(map[Point]bool)
 	prev := make(map[Point]Point)
-	for len(todo) > 0 {
-		min := math.MaxInt
-		var minPoint Point
-		for _, p := range todo {
-			tr, trOk := totalRisk[p]
-			if !visited[p] && trOk && tr < min {
-				min = tr
-				minPoint = p
-			}
+	for len(*todo) > 0 {
+		min, minPoint := todo.pop()
+		if visited[minPoint] {
+			continue
 		}
-
-		newTodo := make([]Point, 0)
-		for _, p := range todo {
-			if p == minPoint {
-				continue
-			}
-			newTodo = append(newTodo, p)
-		}
-		todo = newTodo
-
 		visited[minPoint] = true
 
 		for _, neighbor := range minPoint.Neighbors4() {
@@ -79,9 +64,56 @@ func findPath(set PointSet, from Point, to Point) int {
 			}
 			totalRisk[neighbor] = min + risk
 			prev[neighbor] = minPoint
-			todo = append(todo, neighbor)
+			todo.insert(min+risk, neighbor)
 		}
 	}
 
 	return totalRisk[to]
+}
+
+type heapItem struct {
+	key   int
+	point Point
+}
+
+type heap []heapItem
+
+func (h heap) swap(a, b int) {
+	h[a], h[b] = h[b], h[a]
+}
+
+func (h heap) decrease(i int) {
+	for i > 0 && h[i].key < h[i/2].key {
+		h.swap(i, i/2)
+		i /= 2
+	}
+}
+
+func (h *heap) insert(key int, point Point) {
+	*h = append(*h, heapItem{key, point})
+	h.decrease(len(*h) - 1)
+}
+
+func (h heap) heapify(i int) {
+	left := 2*i + 1
+	right := 2*i + 2
+	min := i
+	if left < len(h) && h[left].key < h[min].key {
+		min = left
+	}
+	if right < len(h) && h[right].key < h[min].key {
+		min = right
+	}
+	if min != i {
+		h.swap(i, min)
+		h.heapify(min)
+	}
+}
+
+func (h *heap) pop() (int, Point) {
+	result := (*h)[0]
+	h.swap(0, len(*h)-1)
+	*h = (*h)[:len(*h)-1]
+	h.heapify(0)
+	return result.key, result.point
 }
