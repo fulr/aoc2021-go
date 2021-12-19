@@ -29,3 +29,11 @@ func readInt(file string) []int {
 	}
 	return nrs
 }
+
+func toint(s string) int {
+	a, err := strconv.Atoi(s)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return a
+}

@@ -72,8 +72,8 @@ func parse(s string, maxPackets int) ([]packet, int) {
 	for i < len(s)-8 && len(result) < maxPackets {
 		current := s[i:]
 		packet := packet{
-			version: toint(current[:3]),
-			typeId:  toint(current[3:6]),
+			version: bintoint(current[:3]),
+			typeId:  bintoint(current[3:6]),
 		}
 
 		switch packet.typeId {
@@ -90,11 +90,11 @@ func parse(s string, maxPackets int) ([]packet, int) {
 
 func parseOperator(s string, packet *packet) {
 	if s[0] == '0' {
-		length := toint(s[1:16])
+		length := bintoint(s[1:16])
 		packet.totalLength = length + 16
 		packet.subpackets, _ = parse(s[16:packet.totalLength], math.MaxInt)
 	} else {
-		length := toint(s[1:12])
+		length := bintoint(s[1:12])
 		packet.subpackets, packet.totalLength = parse(s[12:], length)
 		packet.totalLength += 12
 	}
@@ -105,17 +105,17 @@ func parseLiteral(s string, packet *packet) {
 	i := 0
 	for {
 		if s[i] == '0' {
-			packet.literal = packet.literal*16 + toint(s[i+1:i+5])
+			packet.literal = packet.literal*16 + bintoint(s[i+1:i+5])
 			packet.totalLength = i + 5
 			break
 		} else {
-			packet.literal = packet.literal*16 + toint(s[i+1:i+5])
+			packet.literal = packet.literal*16 + bintoint(s[i+1:i+5])
 		}
 		i += 5
 	}
 }
 
-func toint(s string) int {
+func bintoint(s string) int {
 	result, err := strconv.ParseInt(s, 2, 64)
 	if err != nil {
 		log.Fatal(err)
