@@ -22,16 +22,23 @@ func Day19Part1() {
 	}
 	fmt.Println(len(scanners))
 
-	hits := make(map[transformation]int)
+	transformations := make([]transformation, 0)
 	for i, a := range scanners {
 		for j, b := range scanners {
 			if i == j {
 				continue
 			}
 			for _, m := range transformers {
+				hits := make(map[v3]int)
 				for _, x := range a {
 					for _, y := range b {
-						hits[transformation{m, y.diff(m.mult(x)), i, j}]++
+						hits[y.diff(m.mult(x))]++
+					}
+				}
+				for v, c := range hits {
+					if c == 12 {
+						transformations = append(transformations, transformation{m, v, i, j})
+						break
 					}
 				}
 			}
@@ -39,14 +46,6 @@ func Day19Part1() {
 	}
 
 	fmt.Println("done")
-
-	for t, c := range hits {
-		if c == 12 {
-			fmt.Println(c, t)
-		}
-	}
-
-	fmt.Println("done2")
 
 	beacons := make(map[int]map[v3]bool)
 	for s := range scanners {
@@ -57,12 +56,9 @@ func Day19Part1() {
 	}
 outer:
 	for {
-		for t, c := range hits {
-			if c == 12 {
-				fmt.Println(c, t)
-				for v := range beacons[t.from] {
-					beacons[t.to][t.transform(v)] = true
-				}
+		for _, t := range transformations {
+			for v := range beacons[t.from] {
+				beacons[t.to][t.transform(v)] = true
 			}
 		}
 		l := len(beacons[0])
@@ -94,16 +90,23 @@ func Day19Part2() {
 	}
 	fmt.Println(len(scanners))
 
-	hits := make(map[transformation]int)
+	transformations := make([]transformation, 0)
 	for i, a := range scanners {
 		for j, b := range scanners {
 			if i == j {
 				continue
 			}
 			for _, m := range transformers {
+				hits := make(map[v3]int)
 				for _, x := range a {
 					for _, y := range b {
-						hits[transformation{m, y.diff(m.mult(x)), i, j}]++
+						hits[y.diff(m.mult(x))]++
+					}
+				}
+				for v, c := range hits {
+					if c == 12 {
+						transformations = append(transformations, transformation{m, v, i, j})
+						break
 					}
 				}
 			}
@@ -112,26 +115,15 @@ func Day19Part2() {
 
 	fmt.Println("done")
 
-	for t, c := range hits {
-		if c == 12 {
-			fmt.Println(c, t)
-		}
-	}
-
-	fmt.Println("done2")
-
 	beacons := make(map[int]map[v3]bool)
 	for s := range scanners {
 		beacons[s] = map[v3]bool{{0, 0, 0}: true}
 	}
 outer:
 	for {
-		for t, c := range hits {
-			if c == 12 {
-				fmt.Println(c, t)
-				for v := range beacons[t.from] {
-					beacons[t.to][t.transform(v)] = true
-				}
+		for _, t := range transformations {
+			for v := range beacons[t.from] {
+				beacons[t.to][t.transform(v)] = true
 			}
 		}
 		for _, b := range beacons {
@@ -270,37 +262,3 @@ var transformers = []m3{
 	{{-1, 0, 0}, {0, 0, -1}, {0, -1, 0}},
 	{{-1, 0, 0}, {0, -1, 0}, {0, 0, -1}},
 }
-
-// var transformers = []m3{
-// 	{{0, 0, 1}, {1, 0, 0}, {0, 1, 0}},
-// 	{{0, 1, 0}, {1, 0, 0}, {0, 0, 1}},
-// 	{{1, 0, 0}, {0, 1, 0}, {0, 0, 1}},
-
-// 	{{0, 0, 1}, {-1, 0, 0}, {0, 1, 0}},
-// 	{{0, 1, 0}, {-1, 0, 0}, {0, 0, 1}},
-// 	{{-1, 0, 0}, {0, 1, 0}, {0, 0, 1}},
-
-// 	{{0, 0, 1}, {1, 0, 0}, {0, -1, 0}},
-// 	{{0, -1, 0}, {1, 0, 0}, {0, 0, 1}},
-// 	{{1, 0, 0}, {0, -1, 0}, {0, 0, 1}},
-
-// 	{{0, 0, -1}, {1, 0, 0}, {0, 1, 0}},
-// 	{{0, 1, 0}, {1, 0, 0}, {0, 0, -1}},
-// 	{{1, 0, 0}, {0, 1, 0}, {0, 0, -1}},
-
-// 	{{0, 0, 1}, {-1, 0, 0}, {0, -1, 0}},
-// 	{{0, -1, 0}, {-1, 0, 0}, {0, 0, 1}},
-// 	{{-1, 0, 0}, {0, -1, 0}, {0, 0, 1}},
-
-// 	{{0, 0, -1}, {1, 0, 0}, {0, -1, 0}},
-// 	{{0, -1, 0}, {1, 0, 0}, {0, 0, -1}},
-// 	{{1, 0, 0}, {0, -1, 0}, {0, 0, -1}},
-
-// 	{{0, 0, -1}, {-1, 0, 0}, {0, 1, 0}},
-// 	{{0, 1, 0}, {-1, 0, 0}, {0, 0, -1}},
-// 	{{-1, 0, 0}, {0, 1, 0}, {0, 0, -1}},
-
-// 	{{0, 0, -1}, {-1, 0, 0}, {0, -1, 0}},
-// 	{{0, -1, 0}, {-1, 0, 0}, {0, 0, -1}},
-// 	{{-1, 0, 0}, {0, -1, 0}, {0, 0, -1}},
-// }
