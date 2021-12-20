@@ -98,11 +98,12 @@ func Day20Part2() {
 	fmt.Printf("x: %v - %v y: %v - %v\n", minX, maxX, minY, maxY)
 
 	iterations := 50
+	safety := 5
 
 	for i := 0; i < iterations; i++ {
 		newMap := make(map[Point]int)
-		for x := minX - 2*iterations - 10; x <= maxX+2*iterations+10; x++ {
-			for y := minY - 2*iterations - 10; y <= maxY+2*iterations+10; y++ {
+		for x := minX - 2*(iterations+safety); x <= maxX+2*(iterations+10); x++ {
+			for y := minY - 2*(iterations+safety); y <= maxY+2*(iterations+10); y++ {
 				p := Point{x, y}
 				l := lookupNr(m, p)
 				if lookup[l] == '#' {
@@ -114,8 +115,8 @@ func Day20Part2() {
 	}
 
 	result := 0
-	for x := minX - iterations - 10; x <= maxX+iterations+10; x++ {
-		for y := minY - iterations - 10; y <= maxY+iterations+10; y++ {
+	for x := minX - (iterations + safety); x <= maxX+(iterations+safety); x++ {
+		for y := minY - (iterations + safety); y <= maxY+(iterations+safety); y++ {
 			p := Point{x, y}
 			if m[p] == 1 {
 				result++
