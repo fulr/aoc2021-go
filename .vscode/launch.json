@@ -10,7 +10,7 @@
       "request": "launch",
       "mode": "test",
       "program": "${workspaceFolder}",
-      "args": ["-test.run", "TestDay23T1"]
+      "args": ["-test.run", "TestDay25P1"]
     }
   ]
 }
